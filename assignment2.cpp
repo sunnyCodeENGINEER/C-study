@@ -96,4 +96,13 @@ class Officer {
                     drivers[i].license_expiry_date = new_expiry_date;
                     cout << "License " << license_number << " has been renewed." << endl;
                     return;
+                }
+            }
+        }
 
+};
+
+int main () {
+
+    return 0;
+}
