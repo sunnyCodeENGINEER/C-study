@@ -1,6 +1,9 @@
 #include <iostream>
 #include <vector>
 #include <ctime>
+#include <iomanip>
+
+using namespace std;
 
 using namespace std;
 
@@ -8,27 +11,27 @@ class Vehicle {
     public:
         string make;
         string model;
-        string registration_number;
-        time_t registration_expiry_date;
+        string registrationNumber;
+        time_t registrationExpiryDate;
 
-        Vehicle(string make, string model, string registration_number, time_t registration_expiry_date) {
+        Vehicle(string make, string model, string registrationNumber, time_t registrationExpiryDate) {
             this->make = make;
             this->model = model;
-            this->registration_number = registration_number;
-            this->registration_expiry_date = registration_expiry_date;
+            this->registrationNumber = registrationNumber;
+            this->registrationExpiryDate = registrationExpiryDate;
         }
 };
 
 class Driver {
     public:
         string name;
-        string license_number;
-        time_t license_expiry_date;
+        string licenseNumber;
+        time_t licenseExpiryDate;
 
-        Driver(string name, string license_number, time_t license_expiry_date) {
+        Driver(string name, string licenseNumber, time_t licenseExpiryDate) {
             this->name = name;
-            this->license_number = license_number;
-            this->license_expiry_date = license_expiry_date;
+            this->licenseNumber = licenseNumber;
+            this->licenseExpiryDate = licenseExpiryDate;
         }
 };
 
@@ -37,72 +40,121 @@ class Officer {
         vector<Vehicle> vehicles;
         vector<Driver> drivers;
 
-        void register_vehicle(string make, string model, string registration_number, time_t registration_expiry_date) {
-            Vehicle vehicle(make, model, registration_number, registration_expiry_date);
+        void registerVehicle(string make, string model, string registrationNumber, time_t registrationExpiryDate) {
+            Vehicle vehicle(make, model, registrationNumber, registrationExpiryDate);
             vehicles.push_back(vehicle);
             cout << "Vehicle registered successfully." << endl;
         }
 
-        void issue_license(string name, string license_number, time_t license_expiry_date) {
-            Driver driver(name, license_number, license_expiry_date);
+        void issueLicense(string name, string licenseNumber, time_t licenseExpiryDate) {
+            Driver driver(name, licenseNumber, licenseExpiryDate);
             drivers.push_back(driver);
             cout << "License issued successfully." << endl;
         }
 
-        void check_registration_expiry(string registration_number) {
+        void checkRegistrationExpiry(string registrationNumber) {
             for (int i = 0; i < vehicles.size(); i++) {
-                if (vehicles[i].registration_number == registration_number) {
-                    time_t current_time = time(NULL);
-                    if (vehicles[i].registration_expiry_date < current_time) {
-                        cout << "Registration for vehicle " << registration_number << " has expired." << endl;
+                if (vehicles[i].registrationNumber == registrationNumber) {
+                    time_t currentTime = time(NULL);
+                    if (vehicles[i].registrationExpiryDate < currentTime) {
+                        cout << "Registration for vehicle " << registrationNumber << " has expired." << endl;
                     } else {
-                        cout << "Registration for vehicle " << registration_number << " is valid." << endl;
+                        cout << "Registration for vehicle " << registrationNumber << " is valid." << endl;
                     }
                     return;
                 }
             }
-            cout << "Vehicle with registration number " << registration_number << " not found." << endl;
+            cout << "Vehicle with registration number " << registrationNumber << " not found." << endl;
         }
 
-        void check_license_expiry(string license_number) {
+        void checkLicenseExpiry(string licenseNumber) {
             for (int i = 0; i < drivers.size(); i++) {
-                if (drivers[i].license_number == license_number) {
-                    time_t current_time = time(NULL);
-                    if (drivers[i].license_expiry_date < current_time) {
-                        cout << "License " << license_number << " has expired." << endl;
+                if (drivers[i].licenseNumber == licenseNumber) {
+                    time_t currentTime = time(NULL);
+                    if (drivers[i].licenseExpiryDate < currentTime) {
+                        cout << "License " << licenseNumber << " has expired." << endl;
                     } else {
-                        cout << "License " << license_number << " is valid." << endl;
+                        cout << "License " << licenseNumber << " is valid." << endl;
                     }
                     return;
                 }
             }
-            cout << "Driver with license number " << license_number << " not found." << endl;
+            cout << "Driver with license number " << licenseNumber << " not found." << endl;
         }
 
-        void renew_registration(string registration_number, time_t new_expiry_date) {
+        void renewRegistration(string registrationNumber, time_t newExpiryDate) {
             for (int i = 0; i < vehicles.size(); i++) {
-                if (vehicles[i].registration_number == registration_number) {
-                    vehicles[i].registration_expiry_date = new_expiry_date;
-                    cout << "Registration for vehicle " << registration_number << " has been renewed." << endl;
+                if (vehicles[i].registrationNumber == registrationNumber) {
+                    vehicles[i].registrationExpiryDate = newExpiryDate;
+                    cout << "Registration for vehicle " << registrationNumber << " has been renewed." << endl;
                     return;
                 }
             }
-            cout << "Vehicle with registration number " << registration_number << " not found." << endl;
+            cout << "Vehicle with registration number " << registrationNumber << " not found." << endl;
         }
 
-        void renew_license(string license_number, time_t new_expiry_date) {
+        void renewLicense(string licenseNumber, time_t newExpiryDate) {
             for (int i = 0; i < drivers.size(); i++) {
-                if (drivers[i].license_number == license_number) {
-                    drivers[i].license_expiry_date = new_expiry_date;
-                    cout << "License " << license_number << " has been renewed." << endl;
+                if (drivers[i].licenseNumber == licenseNumber) {
+                    drivers[i].licenseExpiryDate = newExpiryDate;
+                    cout << "License " << licenseNumber << " has been renewed." << endl;
                     return;
                 }
             }
+            cout << "Driver with license number " << licenseNumber << " not found." << endl;
         }
 
 };
 
-int main () {
 
+
+string welcomeMessage() {
+    string userInput;
+    cout << "\t\tWelcome to the DVLA Driver and Vehicle licensing software.\n";
+    cout << "------------------------------------------------------------------------------------------------" << endl;
+    cout << setw(3) << "1." << setw(50) << "To register a new vehicle, press '1'\n";
+    cout << setw(3) << "2." << setw(50) << "To renew a new vehicle registration, press '2'\n";
+    cout << setw(3) << "3." << setw(50) << "To register a new driver, press '3'\n";
+    cout << setw(3) << "4." << setw(50) << "To renew a new driver registration, press '4'\n";
+    cout << setw(3) << "5." << setw(50) << "To exit, press '5'\n" << endl;
+    cout << "Please enter a valid input: ";
+    cin >> userInput;
+
+    return userInput;
+}
+
+int main () {
+    Officer testOfficer;
+    string userInput;
+
+    userInput = welcomeMessage();
+
+    while (userInput != "5") {
+            string make, model, registrationNumber;
+        if (userInput == "1") {
+            cout << "Enter car make: ";
+            cin >> make;
+            cout << "\nEnter car model: ";
+            cin >> model;
+            cout << "\nEnter vehicle registration number: ";
+            cin >> registrationNumber;
+
+            //Vehicle registerVehicle = Vehicle(make, model, registrationNumber, time(NULL));
+            testOfficer.registerVehicle(make, model, registrationNumber, time(NULL));
+            userInput = "";
+        }
+        else if (userInput == "2") {
+            cout << "Enter the vehicle registration number: ";
+            cin >> registrationNumber;
+
+            testOfficer.renewRegistration(registrationNumber, time(NULL));
+
+            userInput = "";
+        }
+    }
+
+
+    userInput = welcomeMessage();
+    cout << userInput;
     return 0;
 }
