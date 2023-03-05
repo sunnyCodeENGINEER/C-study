@@ -24,12 +24,14 @@ class Vehicle {
 
 class Driver {
     public:
-        string name;
+        string lastName;
+        string firstName;
         string licenseNumber;
         time_t licenseExpiryDate;
 
-        Driver(string name, string licenseNumber, time_t licenseExpiryDate) {
-            this->name = name;
+        Driver(string lastName, string firstName, string licenseNumber, time_t licenseExpiryDate) {
+            this->lastName = lastName,
+            this->firstName = firstName;
             this->licenseNumber = licenseNumber;
             this->licenseExpiryDate = licenseExpiryDate;
         }
@@ -46,10 +48,10 @@ class Officer {
             cout << "Vehicle registered successfully." << endl;
         }
 
-        void issueLicense(string name, string licenseNumber, time_t licenseExpiryDate) {
-            Driver driver(name, licenseNumber, licenseExpiryDate);
+        void issueLicense(string lastName, string firstName, string licenseNumber, time_t licenseExpiryDate) {
+            Driver driver(lastName, firstName, licenseNumber, licenseExpiryDate);
             drivers.push_back(driver);
-            cout << "License issued successfully." << endl;
+            cout << "License issued successfully to " << firstName << " " << lastName << ".\n\n";
         }
 
         void checkRegistrationExpiry(string registrationNumber) {
@@ -130,13 +132,13 @@ int main () {
     userInput = welcomeMessage();
 
     while (userInput != "5") {
-            string make, model, registrationNumber;
+            string make, model, registrationNumber, lastName, firstName, licenseNumber;
         if (userInput == "1") {
-            cout << "Enter car make: ";
+            cout << "\nEnter car make: ";
             cin >> make;
-            cout << "\nEnter car model: ";
+            cout << "Enter car model: ";
             cin >> model;
-            cout << "\nEnter vehicle registration number: ";
+            cout << "Enter vehicle registration number: ";
             cin >> registrationNumber;
 
             //Vehicle registerVehicle = Vehicle(make, model, registrationNumber, time(NULL));
@@ -144,12 +146,26 @@ int main () {
             userInput = "";
         }
         else if (userInput == "2") {
-            cout << "Enter the vehicle registration number: ";
+            cout << "\nEnter the vehicle registration number: ";
             cin >> registrationNumber;
 
             testOfficer.renewRegistration(registrationNumber, time(NULL));
 
             userInput = "";
+        }
+        else if (userInput == "3") {
+            cout << "\nEnter last name: ";
+            cin >> lastName;
+            cout << "Enter first name: ";
+            cin >> firstName;
+            cout << "Enter driver license number: ";
+            cin >> licenseNumber;
+
+            testOfficer.issueLicense(lastName, firstName, licenseNumber, time(NULL));
+            userInput = "";
+        }
+        else {
+            userInput = welcomeMessage();
         }
     }
 
