@@ -114,11 +114,11 @@ string welcomeMessage() {
     string userInput;
     cout << "\t\tWelcome to the DVLA Driver and Vehicle licensing software.\n";
     cout << "------------------------------------------------------------------------------------------------" << endl;
-    cout << setw(3) << "1." << setw(50) << "To register a new vehicle, press '1'\n";
-    cout << setw(3) << "2." << setw(50) << "To renew a new vehicle registration, press '2'\n";
-    cout << setw(3) << "3." << setw(50) << "To register a new driver, press '3'\n";
-    cout << setw(3) << "4." << setw(50) << "To renew a new driver registration, press '4'\n";
-    cout << setw(3) << "5." << setw(50) << "To exit, press '5'\n" << endl;
+    cout << setw(3) << "1." << setw(50) << "To register a new vehicle, press '1'.\n";
+    cout << setw(3) << "2." << setw(50) << "To renew a vehicle registration, press '2'.\n";
+    cout << setw(3) << "3." << setw(50) << "To register a new driver, press '3'.\n";
+    cout << setw(3) << "4." << setw(50) << "To renew a driver registration, press '4'.\n";
+    cout << setw(3) << "9." << setw(50) << "To exit, press '9'.\n" << endl;
     cout << "Please enter a valid input: ";
     cin >> userInput;
 
@@ -131,7 +131,7 @@ int main () {
 
     userInput = welcomeMessage();
 
-    while (userInput != "5") {
+    while (userInput != "9") {
             string make, model, registrationNumber, lastName, firstName, licenseNumber;
         if (userInput == "1") {
             cout << "\nEnter car make: ";
@@ -141,7 +141,6 @@ int main () {
             cout << "Enter vehicle registration number: ";
             cin >> registrationNumber;
 
-            //Vehicle registerVehicle = Vehicle(make, model, registrationNumber, time(NULL));
             testOfficer.registerVehicle(make, model, registrationNumber, time(NULL));
             userInput = "";
         }
@@ -150,7 +149,6 @@ int main () {
             cin >> registrationNumber;
 
             testOfficer.renewRegistration(registrationNumber, time(NULL));
-
             userInput = "";
         }
         else if (userInput == "3") {
@@ -164,7 +162,15 @@ int main () {
             testOfficer.issueLicense(lastName, firstName, licenseNumber, time(NULL));
             userInput = "";
         }
+        else if (userInput == "4") {
+            cout << "\nEnter the driver license number: ";
+            cin >> licenseNumber;
+
+            testOfficer.renewLicense(licenseNumber, time(NULL));
+            userInput = "";
+        }
         else {
+            userInput = "";
             userInput = welcomeMessage();
         }
     }
