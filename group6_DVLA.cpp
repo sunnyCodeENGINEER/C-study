@@ -58,6 +58,24 @@ class Officer {
             cout << "License issued successfully to " << firstName << " " << lastName << ".\n\n";
         }
 
+        bool checkRegistration(string registrationNumber, DVLAOffice office) {
+            for (int i = 0; i < office.vehicles.size(); i++) {
+                    if (office.vehicles[i].registrationNumber == registrationNumber) {
+                        return true;
+                    }
+            }
+            return false;
+        }
+
+        bool checkLicense(string licenseNumber, DVLAOffice office) {
+            for (int i = 0; i < office.drivers.size(); i++) {
+                if (office.drivers[i].licenseNumber == licenseNumber) {
+                        return true;
+                }
+            }
+            return false;
+        }
+
         void checkRegistrationExpiry(string registrationNumber, DVLAOffice office) {
             for (int i = 0; i < office.vehicles.size(); i++) {
                 if (office.vehicles[i].registrationNumber == registrationNumber) {
