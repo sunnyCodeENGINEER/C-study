@@ -128,6 +128,14 @@ class Officer {
             cout << "Driver with license number " << licenseNumber << " not found." << endl;
         }
 
+        void changeOfVehicleOwner(string registrationNumber, DVLAOffice office) {
+
+        }
+
+        void replaceLicense(string licenseNumber, DVLAOffice office) {
+
+        }
+
 };
 
 string welcomeMessage() {
