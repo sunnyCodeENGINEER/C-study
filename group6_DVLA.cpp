@@ -172,6 +172,15 @@ class Officer {
         }
 
         void replaceLicense(string licenseNumber, DVLAOffice office) {
+            for (int i = 0; i < office.drivers.size(); i++) {
+                if (office.drivers[i].licenseNumber == licenseNumber) {
+                    string newLicenseNumber;
+                    cout << "Please enter new license number for " << office.drivers[i].lastName << " .\n";
+                    cin >> newLicenseNumber;
+
+                    return ;
+                }
+            }
             if (findLicense(licenseNumber, office)) {
                 // implement code for replacing a lost license.
             }
