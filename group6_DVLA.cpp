@@ -181,30 +181,24 @@ class Officer {
                     return ;
                 }
             }
-            if (findLicense(licenseNumber, office)) {
-                // implement code for replacing a lost license.
-            }
-            else {
-                string response, lastName, firstName, licenseNumber;;
-                cout << "There is no license with that number registered. Do you wish to register a new driver?\n";
-                cout << "Press 'y' or 'Y' to register a new driver.\nPress any other key to to return.";
-                cin >> response;
 
-                if (response == "y" || response == "Y") {
-                    cout << "\nEnter last name: ";
-                    cin >> lastName;
-                    cout << "Enter first name: ";
-                    cin >> firstName;
-                    cout << "Enter driver license number: ";
-                    cin >> licenseNumber;
+            string response, lastName, firstName, newLicenseNumber;
+            cout << "There is no license with that number registered. Do you wish to register a new driver?\n";
+            cout << "Press 'y' or 'Y' to register a new driver.\nPress any other key to to return.";
+            cin >> response;
 
-                    issueLicense(lastName, firstName, licenseNumber, time(NULL), office);
-                }
-                 else {
-                    return;
-                 }
+            if (response == "y" || response == "Y") {
+                cout << "\nEnter last name: ";
+                cin >> lastName;
+                cout << "Enter first name: ";
+                cin >> firstName;
+                cout << "Enter driver license number: ";
+                cin >> newLicenseNumber;
+
+                issueLicense(lastName, firstName, newLicenseNumber, time(NULL), office);
             }
         }
+
 
 };
 
