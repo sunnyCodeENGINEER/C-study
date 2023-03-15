@@ -2,6 +2,7 @@
 #include <vector>
 #include <ctime>
 #include <iomanip>
+#include <list>
 
 using namespace std;
 
@@ -49,11 +50,16 @@ class DVLAOffice {
 
 class Officer {
     public:
+        //vector<Vehicle> vehicles;
+        //vector<Driver> drivers;
 
-        void registerVehicle(string make, string model, string ownerLastName, string ownerFirstName, string registrationNumber, time_t registrationExpiryDate, DVLAOffice office) {
+        DVLAOffice registerVehicle(string make, string model, string ownerLastName, string ownerFirstName, string registrationNumber, time_t registrationExpiryDate, DVLAOffice branch) {
+            DVLAOffice office = branch;
             Vehicle vehicle(make, model, ownerLastName, ownerFirstName, registrationNumber, registrationExpiryDate);
-            office.vehicles.push_back(vehicle);
+            office.vehicles.push_back(move(vehicle));
             cout << "Vehicle registered successfully." << endl;
+
+            return office;
         }
 
         void issueLicense(string lastName, string firstName, string licenseNumber, time_t licenseExpiryDate, DVLAOffice office) {
@@ -166,9 +172,6 @@ class Officer {
 
                     registerVehicle(make, model, lastName, firstName, registrationNumber, time(NULL), office);
                 }
-                 else {
-                    return;
-                 }
         }
 
         void replaceLicense(string licenseNumber, DVLAOffice office) {
@@ -225,6 +228,7 @@ int main () {
     string userInput;
 
     userInput = welcomeMessage();
+    cout << kumasiOffice.vehicles.size();
 
     while (userInput != "9") {
             string make, model, registrationNumber, lastName, firstName, licenseNumber;
@@ -240,7 +244,7 @@ int main () {
             cout << "Enter vehicle registration number: ";
             cin >> registrationNumber;
 
-            testOfficer.registerVehicle(make, model, lastName, firstName, registrationNumber, time(NULL), kumasiOffice);
+            kumasiOffice = testOfficer.registerVehicle(make, model, lastName, firstName, registrationNumber, time(NULL), kumasiOffice);
             userInput = "";
         }
         else if (userInput == "2") {
@@ -285,6 +289,7 @@ int main () {
         else {
             userInput = "";
             userInput = welcomeMessage();
+            cout << kumasiOffice.vehicles.size();
         }
     }
 
