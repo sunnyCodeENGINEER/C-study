@@ -50,8 +50,6 @@ class DVLAOffice {
 
 class Officer {
     public:
-        //vector<Vehicle> vehicles;
-        //vector<Driver> drivers;
 
         DVLAOffice registerVehicle(string make, string model, string ownerLastName, string ownerFirstName, string registrationNumber, time_t registrationExpiryDate, DVLAOffice branch) {
             DVLAOffice office = branch;
@@ -62,10 +60,13 @@ class Officer {
             return office;
         }
 
-        void issueLicense(string lastName, string firstName, string licenseNumber, time_t licenseExpiryDate, DVLAOffice office) {
+        DVLAOffice issueLicense(string lastName, string firstName, string licenseNumber, time_t licenseExpiryDate, DVLAOffice branch) {
+            DVLAOffice office = branch;
             Driver driver(lastName, firstName, licenseNumber, licenseExpiryDate);
             office.drivers.push_back(driver);
             cout << "License issued successfully to " << firstName << " " << lastName << ".\n\n";
+
+            return office;
         }
 
         bool findRegistration(string registrationNumber, DVLAOffice office) {
@@ -116,29 +117,34 @@ class Officer {
             cout << "Driver with license number " << licenseNumber << " not found." << endl;
         }
 
-        void renewRegistration(string registrationNumber, time_t newExpiryDate, DVLAOffice office) {
+        DVLAOffice renewRegistration(string registrationNumber, time_t newExpiryDate, DVLAOffice branch) {
+            DVLAOffice office = branch;
             for (int i = 0; i < office.vehicles.size(); i++) {
                 if (office.vehicles[i].registrationNumber == registrationNumber) {
                     office.vehicles[i].registrationExpiryDate = newExpiryDate;
                     cout << "Registration for vehicle " << registrationNumber << " has been renewed." << endl;
-                    return;
+                    return office;
                 }
             }
             cout << "Vehicle with registration number " << registrationNumber << " not found." << endl;
+            return office;
         }
 
-        void renewLicense(string licenseNumber, time_t newExpiryDate, DVLAOffice office) {
+        DVLAOffice renewLicense(string licenseNumber, time_t newExpiryDate, DVLAOffice branch) {
+            DVLAOffice office = branch;
             for (int i = 0; i < office.drivers.size(); i++) {
                 if (office.drivers[i].licenseNumber == licenseNumber) {
                     office.drivers[i].licenseExpiryDate = newExpiryDate;
                     cout << "License " << licenseNumber << " has been renewed." << endl;
-                    return;
+                    return office;
                 }
             }
             cout << "Driver with license number " << licenseNumber << " not found." << endl;
+            return office;
         }
 
-        void changeOfVehicleOwner(string registrationNumber, DVLAOffice office) {
+        DVLAOffice changeOfVehicleOwner(string registrationNumber, DVLAOffice branch) {
+            DVLAOffice office = branch;
             for (int i = 0; i < office.vehicles.size(); i++) {
                 if (office.vehicles[i].registrationNumber == registrationNumber) {
                     string lastName, firstName;
@@ -150,7 +156,9 @@ class Officer {
                     office.vehicles[i].ownerLastName = lastName;
                     office.vehicles[i].ownerFirstName = firstName;
 
-                    return;
+                    cout << "Owner of vehicle successfully changed.";
+
+                    return office;
                 }
             }
             string response, make, model, lastName, firstName, newRegistrationNumber;
@@ -170,18 +178,24 @@ class Officer {
                     cout << "Enter vehicle registration number: ";
                     cin >> newRegistrationNumber;
 
-                    registerVehicle(make, model, lastName, firstName, registrationNumber, time(NULL), office);
+                    office = registerVehicle(make, model, lastName, firstName, newRegistrationNumber, time(NULL), office);
+                    return office;
                 }
         }
 
-        void replaceLicense(string licenseNumber, DVLAOffice office) {
+        DVLAOffice replaceLicense(string licenseNumber, DVLAOffice branch) {
+            DVLAOffice office = branch;
             for (int i = 0; i < office.drivers.size(); i++) {
                 if (office.drivers[i].licenseNumber == licenseNumber) {
                     string newLicenseNumber;
                     cout << "Please enter new license number for " << office.drivers[i].lastName << " .\n";
                     cin >> newLicenseNumber;
 
-                    return ;
+                    office.drivers[i].licenseNumber = newLicenseNumber;
+
+                    cout << "License of " << office.drivers[i].lastName << " successfully replaced.\n";
+
+                    return office;
                 }
             }
 
@@ -198,7 +212,8 @@ class Officer {
                 cout << "Enter driver license number: ";
                 cin >> newLicenseNumber;
 
-                issueLicense(lastName, firstName, newLicenseNumber, time(NULL), office);
+                office = issueLicense(lastName, firstName, newLicenseNumber, time(NULL), office);
+                return office;
             }
         }
 
@@ -251,7 +266,7 @@ int main () {
             cout << "\nEnter the vehicle registration number: ";
             cin >> registrationNumber;
 
-            testOfficer.renewRegistration(registrationNumber, time(NULL), kumasiOffice);
+            kumasiOffice = testOfficer.renewRegistration(registrationNumber, time(NULL), kumasiOffice);
             userInput = "";
         }
         else if (userInput == "3") {
@@ -262,28 +277,28 @@ int main () {
             cout << "Enter driver license number: ";
             cin >> licenseNumber;
 
-            testOfficer.issueLicense(lastName, firstName, licenseNumber, time(NULL), kumasiOffice);
+            kumasiOffice = testOfficer.issueLicense(lastName, firstName, licenseNumber, time(NULL), kumasiOffice);
             userInput = "";
         }
         else if (userInput == "4") {
             cout << "\nEnter the driver license number: ";
             cin >> licenseNumber;
 
-            testOfficer.renewLicense(licenseNumber, time(NULL), kumasiOffice);
+            kumasiOffice = testOfficer.renewLicense(licenseNumber, time(NULL), kumasiOffice);
             userInput = "";
         }
         else if (userInput == "5") {
             cout << "Enter the license number: ";
             cin >> licenseNumber;
 
-            testOfficer.replaceLicense(licenseNumber, kumasiOffice);
+            kumasiOffice = testOfficer.replaceLicense(licenseNumber, kumasiOffice);
             userInput = "";
         }
         else if (userInput == "6") {
             cout << "Enter the registration number: ";
             cin >> registrationNumber;
 
-            testOfficer.changeOfVehicleOwner(registrationNumber, kumasiOffice);
+            kumasiOffice = testOfficer.changeOfVehicleOwner(registrationNumber, kumasiOffice);
             userInput = "";
         }
         else {
