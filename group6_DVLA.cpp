@@ -15,6 +15,8 @@ class Vehicle {
         string ownerLastName;
         string ownerFirstName;
         string registrationNumber;
+        string registrationType;
+        string vehicleType;
         time_t registrationExpiryDate;
 
         Vehicle(string make, string model, string ownerLastName, string ownerFirstName, string registrationNumber, time_t registrationExpiryDate) {
