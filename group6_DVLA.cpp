@@ -2,7 +2,7 @@
 #include <vector>
 #include <ctime>
 #include <iomanip>
-#include <list>
+#include <algorithm>
 
 using namespace std;
 
@@ -227,6 +227,23 @@ string welcomeMessage() {
     return userInput;
 }
 
+// "<<" operator for the DVLAOffice class.
+ostream& operator<<(ostream& os, DVLAOffice office) {
+    os << "\t\tDRIVERS\n";
+    os << setw(15) << "Surname" << setw(15) << "First Name" << setw(15) << "License Number" << endl;
+    for(int i; i < office.drivers.size(); i++) {
+        os << setw(15) << office.drivers[i].lastName << setw(15) << office.drivers[i].firstName << setw(15) << office.drivers[i].licenseNumber << endl;
+    }
+
+    os<< "\n\t\tVEHICLES\n";
+    os << setw(10) << "Make" << setw(15) << "Model" << setw(15) << "Registration Number" << endl;
+    for(int i; i < office.vehicles.size(); i++) {
+            os << setw(10) << office.vehicles[i].make << setw(15) << office.vehicles[i].model << setw(15) << office.vehicles[i].registrationNumber << endl;
+    }
+
+    return os;
+}
+
 int main () {
     DVLAOffice kumasiOffice;
     Officer testOfficer;
@@ -289,6 +306,10 @@ int main () {
             cin >> registrationNumber;
 
             testOfficer.changeOfVehicleOwner(registrationNumber, &kumasiOffice);
+            userInput = "";
+        }
+        else if (userInput == "99") {
+            cout << kumasiOffice << endl;
             userInput = "";
         }
         else {
