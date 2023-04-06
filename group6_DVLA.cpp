@@ -19,12 +19,13 @@ class Vehicle {
         string vehicleType;
         time_t registrationExpiryDate;
 
-        Vehicle(string make, string model, string ownerLastName, string ownerFirstName, string registrationNumber, time_t registrationExpiryDate) {
+        Vehicle(string make, string model, string ownerLastName, string ownerFirstName, string registrationNumber, string registrationType, time_t registrationExpiryDate) {
             this->make = make;
             this->model = model;
             this->ownerLastName = ownerLastName;
             this->ownerFirstName = ownerFirstName;
             this->registrationNumber = registrationNumber;
+            this->registrationType = registrationType;
             this->registrationExpiryDate = registrationExpiryDate;
         }
 };
@@ -53,8 +54,8 @@ class DVLAOffice {
 class Officer {
     public:
 
-        void registerVehicle(string make, string model, string ownerLastName, string ownerFirstName, string registrationNumber, time_t registrationExpiryDate, DVLAOffice* office) {
-            Vehicle vehicle(make, model, ownerLastName, ownerFirstName, registrationNumber, registrationExpiryDate);
+        void registerVehicle(string make, string model, string ownerLastName, string ownerFirstName, string registrationNumber, string registrationType, time_t registrationExpiryDate, DVLAOffice* office) {
+            Vehicle vehicle(make, model, ownerLastName, ownerFirstName, registrationNumber, registrationType, registrationExpiryDate);
             office->vehicles.push_back(move(vehicle));
             cout << "Vehicle registered successfully." << endl;
         }
@@ -152,7 +153,7 @@ class Officer {
                     return;
                 }
             }
-            string response, make, model, lastName, firstName, newRegistrationNumber;
+            string response, make, model, lastName, firstName, newRegistrationNumber, registrationType;
                 cout << "There is no vehicle with that number registered. Do you wish to register a new vehicle?\n";
                 cout << "Press 'y' or 'Y' to register a new vehicle.\nPress any other key to to return.";
                 cin >> response;
@@ -168,8 +169,10 @@ class Officer {
                     cin >> firstName;
                     cout << "Enter vehicle registration number: ";
                     cin >> newRegistrationNumber;
+                    cout << "Enter the type of registration,(whether private or commercial): ";
+                    cin >> registrationType;
 
-                    registerVehicle(make, model, lastName, firstName, newRegistrationNumber, time(NULL), office);
+                    registerVehicle(make, model, lastName, firstName, newRegistrationNumber, registrationType, time(NULL), office);
                     return;
                 }
         }
@@ -220,6 +223,7 @@ string welcomeMessage() {
     cout << setw(3) << "4." << setw(60) << "To renew a driver registration, press '4'.\n";
     cout << setw(3) << "5." << setw(60) << "To replace a lost driver's license, press '5'.\n";
     cout << setw(3) << "6." << setw(60) << "To change the owner of a registered vehicle, press '6'.\n";
+    cout << setw(3) << "99." << setw(60) << "To view all registered vehicles and drivers, press '99'.\n";
     cout << setw(3) << "9." << setw(60) << "To exit, press '9'.\n" << endl;
     cout << "Please enter a valid input: ";
     cin >> userInput;
@@ -229,17 +233,21 @@ string welcomeMessage() {
 
 // "<<" operator for the DVLAOffice class.
 ostream& operator<<(ostream& os, DVLAOffice office) {
-    os << "\t\tDRIVERS\n";
-    os << setw(15) << "Surname" << setw(15) << "First Name" << setw(15) << "License Number" << endl;
-    for(int i; i < office.drivers.size(); i++) {
-        os << setw(15) << office.drivers[i].lastName << setw(15) << office.drivers[i].firstName << setw(15) << office.drivers[i].licenseNumber << endl;
+    os << "\t\t\t***DRIVERS***\n";
+    os << setw(15) << "Surname" << " || " << setw(15) << "First Name" << " || " << setw(15) << "License Number" << endl;
+    os << "___________________________________________________________________\n";
+    for(int i = 0; i < office.drivers.size(); i++) {
+        os << setw(15) << office.drivers[i].lastName << " || " << setw(15) << office.drivers[i].firstName << " || " << setw(15) << office.drivers[i].licenseNumber << endl;
     }
 
-    os<< "\n\t\tVEHICLES\n";
-    os << setw(10) << "Make" << setw(15) << "Model" << setw(15) << "Registration Number" << endl;
-    for(int i; i < office.vehicles.size(); i++) {
-            os << setw(10) << office.vehicles[i].make << setw(15) << office.vehicles[i].model << setw(15) << office.vehicles[i].registrationNumber << endl;
+    os<< "\n\n\t\t\t***VEHICLES***\n";
+    os << setw(10) << "Make" << " || " << setw(15) << "Model" << " || " << setw(22) << "Registration Number" << " || " << setw(15) << "Registration Type" << endl;
+    os << "________________________________________________________________________________\n";
+    for(int i = 0; i < office.vehicles.size(); i++) {
+            os << setw(10) << office.vehicles[i].make << " || "
+            << setw(15) << office.vehicles[i].model << " || " << setw(22) << office.vehicles[i].registrationNumber << " || " << setw(15) << office.vehicles[i].registrationType << endl;
     }
+    os << endl << endl;
 
     return os;
 }
@@ -250,10 +258,9 @@ int main () {
     string userInput;
 
     userInput = welcomeMessage();
-    cout << kumasiOffice.vehicles.size();
 
     while (userInput != "9") {
-            string make, model, registrationNumber, lastName, firstName, licenseNumber;
+            string make, model, registrationNumber, lastName, firstName, licenseNumber, registrationType;
         if (userInput == "1") {
             cout << "\nEnter car make: ";
             cin >> make;
@@ -265,8 +272,10 @@ int main () {
             cin >> firstName;
             cout << "Enter vehicle registration number: ";
             cin >> registrationNumber;
+            cout << "Enter registration type,(whether private or commercial): ";
+            cin >> registrationType;
 
-            testOfficer.registerVehicle(make, model, lastName, firstName, registrationNumber, time(NULL), &kumasiOffice);
+            testOfficer.registerVehicle(make, model, lastName, firstName, registrationNumber, registrationType, time(NULL), &kumasiOffice);
             userInput = "";
         }
         else if (userInput == "2") {
@@ -315,12 +324,8 @@ int main () {
         else {
             userInput = "";
             userInput = welcomeMessage();
-            cout << kumasiOffice.vehicles.size();
         }
     }
 
-
-    userInput = welcomeMessage();
-    cout << userInput;
     return 0;
 }
