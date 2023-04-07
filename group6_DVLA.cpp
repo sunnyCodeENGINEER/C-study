@@ -2,7 +2,7 @@
 #include <vector>
 #include <ctime>
 #include <iomanip>
-#include <algorithm>
+#include <stdlib.h>
 
 using namespace std;
 
@@ -57,7 +57,7 @@ class Officer {
         void registerVehicle(string make, string model, string ownerLastName, string ownerFirstName, string registrationNumber, string registrationType, time_t registrationExpiryDate, DVLAOffice* office) {
             Vehicle vehicle(make, model, ownerLastName, ownerFirstName, registrationNumber, registrationType, registrationExpiryDate);
             office->vehicles.push_back(move(vehicle));
-            cout << "Vehicle registered successfully." << endl;
+            cout << "Vehicle registered successfully.\n" << endl;
         }
 
         void issueLicense(string lastName, string firstName, string licenseNumber, time_t licenseExpiryDate, DVLAOffice* office) {
@@ -89,14 +89,14 @@ class Officer {
                 if (office.vehicles[i].registrationNumber == registrationNumber) {
                     time_t currentTime = time(NULL);
                     if (office.vehicles[i].registrationExpiryDate < currentTime) {
-                        cout << "Registration for vehicle " << registrationNumber << " has expired." << endl;
+                        cout << "Registration for vehicle " << registrationNumber << " has expired.\n" << endl;
                     } else {
-                        cout << "Registration for vehicle " << registrationNumber << " is valid." << endl;
+                        cout << "Registration for vehicle " << registrationNumber << " is valid.\n" << endl;
                     }
                     return;
                 }
             }
-            cout << "Vehicle with registration number " << registrationNumber << " not found." << endl;
+            cout << "Vehicle with registration number " << registrationNumber << " not found.\n" << endl;
         }
 
         void checkLicenseExpiry(string licenseNumber, DVLAOffice office) {
@@ -104,36 +104,36 @@ class Officer {
                 if (office.drivers[i].licenseNumber == licenseNumber) {
                     time_t currentTime = time(NULL);
                     if (office.drivers[i].licenseExpiryDate < currentTime) {
-                        cout << "License " << licenseNumber << " has expired." << endl;
+                        cout << "License " << licenseNumber << " has expired.\n" << endl;
                     } else {
-                        cout << "License " << licenseNumber << " is valid." << endl;
+                        cout << "License " << licenseNumber << " is valid.\n" << endl;
                     }
                     return;
                 }
             }
-            cout << "Driver with license number " << licenseNumber << " not found." << endl;
+            cout << "Driver with license number " << licenseNumber << " not found.\n" << endl;
         }
 
         void renewRegistration(string registrationNumber, time_t newExpiryDate, DVLAOffice* office) {
             for (int i = 0; i < office->vehicles.size(); i++) {
                 if (office->vehicles[i].registrationNumber == registrationNumber) {
                     office->vehicles[i].registrationExpiryDate = newExpiryDate;
-                    cout << "Registration for vehicle " << registrationNumber << " has been renewed." << endl;
+                    cout << "Registration for vehicle " << registrationNumber << " has been renewed.\n" << endl;
                     return;
                 }
             }
-            cout << "Vehicle with registration number " << registrationNumber << " not found." << endl;
+            cout << "Vehicle with registration number " << registrationNumber << " not found.\n" << endl;
         }
 
         void renewLicense(string licenseNumber, time_t newExpiryDate, DVLAOffice* office) {
             for (int i = 0; i < office->drivers.size(); i++) {
                 if (office->drivers[i].licenseNumber == licenseNumber) {
                     office->drivers[i].licenseExpiryDate = newExpiryDate;
-                    cout << "License " << licenseNumber << " has been renewed." << endl;
+                    cout << "License " << licenseNumber << " has been renewed.\n" << endl;
                     return;
                 }
             }
-            cout << "Driver with license number " << licenseNumber << " not found." << endl;
+            cout << "Driver with license number " << licenseNumber << " not found.\n" << endl;
         }
 
         void changeOfVehicleOwner(string registrationNumber, DVLAOffice* office) {
@@ -275,6 +275,7 @@ int main () {
             cout << "Enter registration type,(whether private or commercial): ";
             cin >> registrationType;
 
+            system("CLS");
             testOfficer.registerVehicle(make, model, lastName, firstName, registrationNumber, registrationType, time(NULL), &kumasiOffice);
             userInput = "";
         }
@@ -282,6 +283,7 @@ int main () {
             cout << "\nEnter the vehicle registration number: ";
             cin >> registrationNumber;
 
+            system("CLS");
             testOfficer.renewRegistration(registrationNumber, time(NULL), &kumasiOffice);
             userInput = "";
         }
@@ -293,6 +295,7 @@ int main () {
             cout << "Enter driver license number: ";
             cin >> licenseNumber;
 
+            system("CLS");
             testOfficer.issueLicense(lastName, firstName, licenseNumber, time(NULL), &kumasiOffice);
             userInput = "";
         }
@@ -300,6 +303,7 @@ int main () {
             cout << "\nEnter the driver license number: ";
             cin >> licenseNumber;
 
+            system("CLS");
             testOfficer.renewLicense(licenseNumber, time(NULL), &kumasiOffice);
             userInput = "";
         }
@@ -307,6 +311,7 @@ int main () {
             cout << "Enter the license number: ";
             cin >> licenseNumber;
 
+            system("CLS");
             testOfficer.replaceLicense(licenseNumber, &kumasiOffice);
             userInput = "";
         }
@@ -314,15 +319,18 @@ int main () {
             cout << "Enter the registration number: ";
             cin >> registrationNumber;
 
+            system("CLS");
             testOfficer.changeOfVehicleOwner(registrationNumber, &kumasiOffice);
             userInput = "";
         }
         else if (userInput == "99") {
+            system("CLS");
             cout << kumasiOffice << endl;
             userInput = "";
         }
         else {
             userInput = "";
+            //system("CLS");
             userInput = welcomeMessage();
         }
     }
